@@ -10,11 +10,11 @@ router.get('/api/playlists/:id', playlistController.show)
 router.patch('/api/playlists/:id', playlistController.update)
 router.delete('/api/playlists/:id', playlistController.delete)
 
-router.get('/api/songs', songController.index)
-router.post('/api/songs', songController.create)
-router.get('/api/songs/:id', songController.show)
-router.patch('/api/songs/:id', songController.update)
-router.delete('/api/songs/:id', songController.delete)
+router.get('/api/playlists/:plid/songs', songController.index)
+router.post('/api/playlists/:plid/songs', songController.create)
+router.get('/api/playlists/:plid/songs/:id', songController.show)
+router.patch('/api/playlists/:plid/songs/:id', songController.update)
+router.delete('/api/song/:id', songController.delete)
 
 
 

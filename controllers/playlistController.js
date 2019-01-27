@@ -2,14 +2,15 @@ const Playlist = require('../models/Playlist')
 
 const playlistController = {
     index: (req, res) => {
-        Playlist.find().then((playlists) => {
+        Playlist.find({}).then((playlists) => {
           res.json(playlists)
+          console.log(playlists)
         }).catch((err) => {
           console.log(err)
         })
       },
       show: (req, res) => {
-        Playlist.findById(req.params.id)
+        Playlist.findById(req.params.id).populate('songs')
             .then((playlist) => {
                 res.send(playlist)
             })

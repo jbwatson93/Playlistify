@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const Song = new Schema({
     url: String,
-    name: String
+    name: String,
+    artist: String
    
 })
 

@@ -1,4 +1,5 @@
 const Song = require('../models/Song')
+const Playlist = require('../models/Playlist')
 
 const songController = {
     index: (req, res) => {
@@ -28,10 +29,18 @@ const songController = {
             })
     },
     create: (req, res) => {
-        Song.create(req.body)
-            .then((song) => {
-                res.send(song)
+        var plid = req.params.plid
+        Playlist.findById(plid)
+            .then((playlist) => {
+                console.log(playlist)
+                Song.create(req.body)
+                    .then((newsong) => {
+                        console.log(newsong)
+                        playlist.songs.push(newsong)
+                        playlist.save()
+                        res.send(newsong)
+                    })
             })
     }
 }
-module.exports = playlistController
+module.exports = songController
