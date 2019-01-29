@@ -7,7 +7,9 @@ import Navbar from './Navbar';
 class Playlists extends Component {
     state = {
         playlists: [],
-        newPlaylist: {}
+        newPlaylist: {},
+        genre: 'Random',
+        sorted: false,
     }
     componentDidMount() {
         this.getPlaylists()
@@ -25,6 +27,10 @@ class Playlists extends Component {
         newPlaylist[e.target.name] = e.target.value
         this.setState({ newPlaylist })
     }
+    handleChange2 = (e) => {
+       
+        this.setState({genre: e.target.value})
+    }
     addPlaylist = () => {
         axios.post(`/api/playlists/`, this.state.newPlaylist)
             .then((res) => {
@@ -33,25 +39,66 @@ class Playlists extends Component {
                 this.setState({ playlists: newPlaylist })
             })
     }
+    sortGenre = () => {
+      const sorted = this.state.playlists.filter(playlist => playlist.genre === this.state.genre)
+      
+        this.setState({playlists: sorted, sorted:true})
+      
+    }
+    sortAgain = () => {
+        this.getPlaylists()
+        this.setState({sorted: false})
+    }
     render() {
         return (
             <div>
                 <Navbar />
                 <div className='page'>
                     <h1>Playlists</h1>
+                    {this.state.sorted ? <button className='addSong' onClick={this.sortAgain}>Sort Again</button>
+                    : <div>
+                    <select name='genre' onChange={(e) => this.handleChange2(e)}>
+                    <option value="Random">Random</option>
+                    <option value="Hip-Hop">Hip-Hop</option>
+                    <option value="Electronic">Electronic</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Indie">Indie</option>
+                    <option value="Country">Country</option>
+                    <option value="R+B">R+B</option>
+                    <option value="Latin">Latin</option>
+                    <option value="Pop">Pop</option>
+                    <option value="Jazz">Jazz</option>
+                    <option value="Metal">Metal</option>
+                    <option value="Punk">Punk</option>
+                </select>
+                <button onClick={this.sortGenre} className='addSong'>Sort By Genre</button> </div>}
                     {this.state.playlists.map((playlists, i) => (
                         <div key={i}>
-                            <div>
-                                <Link to={`/playlists/${playlists._id}`}> <h2>{playlists.name}</h2></Link>
-                                <p>{playlists.genre}</p>
+                            <div className='playlistList'>
+                                <Link className='link' to={`/playlists/${playlists._id}`}> <h2>{playlists.name}</h2></Link>
+                                <p> Genre:{playlists.genre}</p>
 
                             </div>
                         </div>
                     ))}
                 </div>
                 <input type='text' name='name' placeholder='Name' onChange={(e) => this.handleChange(e)} />
-                <input type='text' name='genre' placeholder='Genre' onChange={(e) => this.handleChange(e)} />
-                <button onClick={this.addPlaylist}>Create Playlist</button>
+                {/* <input type='text' name='genre' placeholder='Genre' onChange={(e) => this.handleChange(e)} /> */}
+                <select name='genre' onChange={(e) => this.handleChange(e)}>
+                    <option value="Random">Random</option>
+                    <option value="Hip-Hop">Hip-Hop</option>
+                    <option value="Electronic">Electronic</option>
+                    <option value="Rock">Rock</option>
+                    <option value="Indie">Indie</option>
+                    <option value="Country">Country</option>
+                    <option value="R+B">R+B</option>
+                    <option value="Latin">Latin</option>
+                    <option value="Pop">Pop</option>
+                    <option value="Jazz">Jazz</option>
+                    <option value="Metal">Metal</option>
+                    <option value="Punk">Punk</option>
+                </select>
+                <button className='addSong' onClick={this.addPlaylist}>Create Playlist</button>
             </div>
         );
     }

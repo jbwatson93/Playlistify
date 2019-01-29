@@ -33,13 +33,13 @@ const song5 = new Song({
 
 const playlist1 = new Playlist({
     name: 'Funky Mix',
-    genre: 'random',
+    genre: 'Random',
     songs: [song1,song2,song3]
 })
 
 const playlist2 = new Playlist({
     name: 'Pop Favorites',
-    genre: 'pop',
+    genre: 'Pop',
     songs: [song4,song5]
 })
 

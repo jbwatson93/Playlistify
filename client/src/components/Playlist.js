@@ -102,13 +102,14 @@ class Playlist extends Component {
                 <div className='page'>
                     <h1>{this.state.playlists.name}</h1>
                     {this.state.edited ? <div> <input onChange={(e) => this.handleChange2(e)} name='name' type='text'></input> <button className='addSong' onClick={this.updatePlaylist} > Update Name </button> </div> : null}
-                    <p>{this.state.playlists.genre}</p>
+                    <p>Genre: {this.state.playlists.genre}</p>
 
                     <button onClick={this.editing}>Edit</button>
 
                     {this.state.loaded ? <div className='player-wrapper'><ReactPlayer className='react-player'
                         controls={true} url={song.url}
-                        onEnded={this.nowPlaying} playing={this.state.playing}
+                        onEnded={this.nowPlaying} 
+                        playing={this.state.playing}
                         width='80%'
                         height='80%' /> </div> : null}
                     <div>
