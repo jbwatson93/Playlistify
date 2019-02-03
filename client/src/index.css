@@ -122,3 +122,22 @@ select{
   text-decoration: none;
   color: #00ff7f
 }
+.addPlaylist{
+  width: 100%;
+  text-align: center;
+}
+.lyricCont{
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.lyrics{
+  width: 60%;
+  text-align: center;
+}
+.pagetitle{
+  color: springgreen
+}

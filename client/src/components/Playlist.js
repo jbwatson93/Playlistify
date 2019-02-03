@@ -1,9 +1,12 @@
+
 import React, { Component } from 'react';
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import ReactPlayer from 'react-player'
 import Song from './Song'
 import Navbar from './Navbar';
+
+
 
 class Playlist extends Component {
     state = {
@@ -24,8 +27,12 @@ class Playlist extends Component {
             name: "",
             artist: '',
             url: ''
-        }
+        },
+        lyrics: '',
+        songid: '',
     }
+
+
     playPause = () => {
         this.setState({ playing: !this.state.playing })
     }
@@ -44,7 +51,7 @@ class Playlist extends Component {
             this.setState({ nowPlaying: 0 })
         }
         else { this.setState({ nowPlaying: this.state.nowPlaying + 1 }) }
-
+        
     }
     addSong = () => {
         axios.post(`/api/playlists/${this.props.match.params.id}/songs`, this.state.newSong)
@@ -59,12 +66,12 @@ class Playlist extends Component {
     getPlaylists = () => {
         axios.get(`/api/playlists/${this.props.match.params.id}`)
             .then((res) => {
-                console.log(res.data)
+                
                 this.setState({
                     playlists: res.data
                 })
             }).then((res) => {
-                console.log(this.state.playlists)
+                
                 if (this.state.playlists.songs[0] === undefined) { }
                 else {
                     this.setState({ loaded: true })
@@ -93,6 +100,28 @@ class Playlist extends Component {
         axios.patch(`/api/playlists/${this.props.match.params.id}`, this.state.playlists)
             .then(this.editing())
     }
+    getLyrics = () =>{
+       
+          axios.get(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.lyrics.get?track_id=${this.state.songid}&apikey=c0099f439dc1293adae097ceba314746`)
+        .then((res) => {
+            
+            
+            if(res.data.message.body.lyrics === undefined){}
+            else{
+                const lyrics = res.data.message.body.lyrics.lyrics_body
+                this.setState({lyrics: lyrics}) 
+            }
+           
+        })
+    }
+    getsongid = () => {
+      
+        axios.get(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/track.search?format=json&q_track=${this.state.playlists.songs[this.state.nowPlaying].name}&q_artist=${this.state.playlists.songs[this.state.nowPlaying].artist}&quorum_factor=1&apikey=c0099f439dc1293adae097ceba314746`)
+        .then((res)=> {
+           const trackid = res.data.message.body.track_list[0].track.track_id
+                this.setState({songid: trackid})
+        }).then( this.getLyrics)
+    }
     render() {
         const song = this.state.playlists.songs[this.state.nowPlaying]
         const back = '|<'
@@ -117,6 +146,7 @@ class Playlist extends Component {
                         <button className="controls" onClick={this.playPause}>Play</button>
                         <button className="controls" onClick={this.nowPlaying}>>|</button>
                     </div>
+                    <div><button onClick={this.getsongid}>Get Lyrics</button></div>
                     {this.state.playlists.songs.map((song, i) => (
                         <Song getSong={this.getPlaylists} id={song._id} name={song.name} artist={song.artist} index={i} nowplaying={this.state.nowPlaying} />
                     ))}
@@ -124,6 +154,10 @@ class Playlist extends Component {
                         <input type='text' name='name' placeholder='Song' onChange={(e) => this.handleChange(e)} />
                         <input type='text' name='url' placeholder='URL' onChange={(e) => this.handleChange(e)} />
                         <button className='addSong' onClick={this.addSong}>Add Song</button>
+                    </div>
+                    <div className='lyricCont'>
+                    <h2>Lyrics</h2>
+                    <p className='lyrics'>{this.state.lyrics}</p>
                     </div>
                 </div>
                 <Link to='/playlists'> <button className='addSong' onClick={this.deletePlaylist}>Delete Playlist</button> </Link>

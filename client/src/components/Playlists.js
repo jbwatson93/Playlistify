@@ -7,7 +7,9 @@ import Navbar from './Navbar';
 class Playlists extends Component {
     state = {
         playlists: [],
-        newPlaylist: {},
+        newPlaylist: {
+            genre: 'Random'
+        },
         genre: 'Random',
         sorted: false,
     }
@@ -18,7 +20,7 @@ class Playlists extends Component {
     getPlaylists = () => {
         axios.get('/api/playlists')
             .then((res) => {
-                console.log(res.data)
+                
                 this.setState({ playlists: res.data })
             })
     }
@@ -54,7 +56,7 @@ class Playlists extends Component {
             <div>
                 <Navbar />
                 <div className='page'>
-                    <h1>Playlists</h1>
+                    <h1 className='pagetitle'>Playlists</h1>
                     {this.state.sorted ? <button className='addSong' onClick={this.sortAgain}>Sort Again</button>
                     : <div>
                     <select name='genre' onChange={(e) => this.handleChange2(e)}>
@@ -82,6 +84,7 @@ class Playlists extends Component {
                         </div>
                     ))}
                 </div>
+                <div className='addPlaylist'>
                 <input type='text' name='name' placeholder='Name' onChange={(e) => this.handleChange(e)} />
                 {/* <input type='text' name='genre' placeholder='Genre' onChange={(e) => this.handleChange(e)} /> */}
                 <select name='genre' onChange={(e) => this.handleChange(e)}>
@@ -99,6 +102,7 @@ class Playlists extends Component {
                     <option value="Punk">Punk</option>
                 </select>
                 <button className='addSong' onClick={this.addPlaylist}>Create Playlist</button>
+                </div>
             </div>
         );
     }
