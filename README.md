@@ -3,7 +3,7 @@
  [Go to the WebSite](https://playlistify-93.herokuapp.com/playlists)
  [View Trello](https://trello.com/b/zADVunYQ/playlistify)
 
-#Summary
+# Summary
 Playlistify is a community playlist maker. You can create a playlist and can add urls from different streaming sites such as youtube, soundcloud, and vimeo to make your playlist. The ideaa is that you can make a playlist and if someone else knows a good song that will go with the playlist you could add to it. If you add the artist and song name you can get the lyrics by pressing the get lyrics button and the lyrics will populate the bottom of the page. You can sort through all the playlist by genre. 
 
 # Technologies used
